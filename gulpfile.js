@@ -22,12 +22,12 @@ function compileJS(){
             presets: ['@babel/env']
         }))
         .pipe(rename({
-            suffix: "-es5"
+            suffix: "-compiled"
         }))
         .pipe(dest('./js/'))
 }
 
 exports.default = function(){
     watch('./scss/*.scss', compileSass);
-    watch('./js/main.js', compileJS)
+    watch('./js/main.js', compileJS);
 };
