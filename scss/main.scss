@@ -1,3 +1,26 @@
+$font-family-sans-serif: 'Droid Serif', serif;
+$font-size-base: 1.063rem;
+$nav-link-font-size: 0.875rem;
+$navbar-padding-y: 3.5rem;
+$navbar-brand-padding-y: 0rem;
+$body-color: #585858;
+$btn-padding-y: 15px;
+$btn-padding-x: 48px;
+$btn-font-family: 'Poppins', sans-serif;
+$grid-gutter-width: 3.25rem;
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1394px
+);
+$h1-font-size: 4.875rem;
+$h2-font-size: 3.875rem;
+$h3-font-size: 3rem;
+$h4-font-size: 2rem;
+$h5-font-size: 1.5rem;
+
 // Import Bootstrap 5
 @import "../node_modules/bootstrap/scss/bootstrap.scss";
 
@@ -5,3 +28,7 @@
 @import "font";
 @import "header";
 @import "slider";
+@import "features";
+@import "classes";
+@import "testimonials";
+@import "gallery";

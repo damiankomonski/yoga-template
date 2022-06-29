@@ -1,0 +1,17 @@
+.gallery{
+    &__one{
+        float: left;
+        margin-bottom: 54px;
+        position: relative;
+
+        &:first-child{
+            margin-right: 48px;
+        }
+
+        p{
+            position: absolute;
+            right: 85px;
+            bottom: 33px;
+        }
+    }
+}

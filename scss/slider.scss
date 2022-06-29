@@ -1,5 +1,26 @@
 .slider{
+    margin-bottom: 95px;
+    
     &__text{
-        
+        h1{
+            margin-top: 216px;
+            text-transform: uppercase;
+            color: #1D1D1D;
+
+            span{
+                font-weight: 700;
+                color: #73A35A;
+            }
+        }
+
+        p{
+            margin-bottom: 38px;
+        }
+    }
+
+    &__img{
+        img{
+            float: right;
+        }
     }
 }

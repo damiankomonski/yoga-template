@@ -1,10 +1,23 @@
 .header{
     .navbar{
-        margin: 56px 0;
-        padding: 0;
-
         .navbar-brand{
             margin-right: 95px;
+            margin-left: 97px;
+        }
+
+        .navbar-collapse{
+            .navbar-nav{
+                font-family: 'Poppins', sans-serif;
+
+                .nav-link{
+                    text-transform: uppercase;
+                    color: #202020;
+                    font-size: 0.875rem;
+                    margin: 0 32px;
+                    padding: 0;
+                    letter-spacing: 0.1875rem;
+                }
+            }
         }
     }
 }
