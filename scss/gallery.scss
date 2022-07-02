@@ -1,8 +1,15 @@
 .gallery{
+    margin-bottom: 164px;
+    
     &__one{
         float: left;
         margin-bottom: 54px;
         position: relative;
+        transition: opacity 0.3s ease-in-out;
+
+        &:hover{
+            opacity: 0.7;
+        }
 
         &:first-child{
             margin-right: 48px;
@@ -11,7 +18,11 @@
         p{
             position: absolute;
             right: 85px;
-            bottom: 33px;
+            bottom: 40px;
+            color: $white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            margin-bottom: 0;
         }
     }
 }

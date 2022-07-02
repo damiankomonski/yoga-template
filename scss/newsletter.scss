@@ -1,0 +1,25 @@
+.newsletter{
+    margin-bottom: 117px;
+
+    &__text{
+        h2{
+            text-transform: uppercase;
+            color: #2D2424;
+        }
+
+        p{
+            font-size: 1.313rem;
+            line-height: 32px;
+        }
+    }
+
+    &__form{
+        .form-control{
+            margin-bottom: 25px;
+        }
+
+        .btn{
+            width: 100%;
+        }
+    }
+}

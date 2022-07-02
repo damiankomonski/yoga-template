@@ -32,3 +32,26 @@ main{
         }
     }
 }
+
+.section-title{
+    margin-bottom: 70px;
+    
+    h2{
+        text-transform: uppercase;
+        text-align: center;
+        position: relative;
+        color: #2D2424;
+
+        &:after{
+            content: '';
+            width: 74px;
+            height: 1px;
+            background: #2D2424;
+            position: absolute;
+            left: 0;
+            right: 0;
+            margin: auto;
+            bottom: -17px;
+        }
+    }
+}
