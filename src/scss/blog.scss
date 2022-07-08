@@ -1,0 +1,30 @@
+.blog{
+    margin-bottom: 110px;
+    
+    &__news{
+        margin-bottom: 57px;
+
+        a{
+            text-decoration: none;
+            color: #2D2424;
+            transition: opacity 0.3s ease-in-out;
+
+            &:hover{
+                opacity: 0.7;
+            }
+
+            h3{
+                font-weight: 700;
+            }
+            
+            img{
+                margin-bottom: 26px;
+            }
+        }
+    }
+
+    .btn{
+        margin: 0 auto;
+        width: auto;
+    }
+}

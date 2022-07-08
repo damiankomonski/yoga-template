@@ -1,0 +1,66 @@
+//Main variables
+$font-family-sans-serif: 'Droid Serif', serif;
+$font-size-base: 1.063rem;
+$body-color: #585858;
+
+//Grid variables
+$grid-gutter-width: 3.25rem;
+$container-max-widths: (
+  sm: 540px,
+  md: 720px,
+  lg: 960px,
+  xl: 1140px,
+  xxl: 1394px
+);
+
+//Headings variables
+$headings-font-family: 'Poppins', sans-serif;
+$headings-font-weight: 300;
+$h1-font-size: 4.875rem;
+$h2-font-size: 3.875rem;
+$h3-font-size: 3rem;
+$h4-font-size: 2rem;
+$h5-font-size: 1.5rem;
+
+//Buttons variables
+$btn-padding-y: 15px;
+$btn-padding-x: 48px;
+$btn-font-family: 'Poppins', sans-serif;
+$btn-padding-y-lg: 1.438rem;
+
+// Inputs variables
+$input-padding-y: 1rem;
+$input-padding-x: 1.75rem;
+$input-font-size: 1rem;
+$input-border-radius: 50px;
+$input-border-color: #D8D8D8;
+$input-focus-border-color: #73A35A;
+
+//Navbar variables
+$nav-link-font-size: 0.875rem;
+$navbar-padding-y: 3.5rem;
+$navbar-brand-padding-y: 0rem;
+$input-focus-box-shadow: 0 0 0 .25rem rgba(115,163,90,.25);
+
+//Tables variables
+$table-cell-padding-y: 1.5rem;
+$table-cell-padding-x: 1.875rem;
+$border-color: rgba(0,0,0,0.3);
+$table-cell-vertical-align: middle;
+
+// Import Bootstrap 5
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+// Theme styles
+@import "global";
+@import "font";
+@import "header";
+@import "slider";
+@import "features";
+@import "classes";
+@import "testimonials";
+@import "gallery";
+@import "newsletter";
+@import "event-calendar";
+@import "blog";
+@import "follow-instagram";
