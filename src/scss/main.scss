@@ -13,6 +13,9 @@ $container-max-widths: (
   xxl: 1394px
 );
 
+//Colors
+$primary: #73A35A;
+
 //Headings variables
 $headings-font-family: 'Poppins', sans-serif;
 $headings-font-weight: 300;
@@ -48,13 +51,26 @@ $table-cell-padding-x: 1.875rem;
 $border-color: rgba(0,0,0,0.3);
 $table-cell-vertical-align: middle;
 
+// Spacing
+$spacer: 1rem;
+$spacers: (
+  0: 0,
+  1: $spacer * .25,
+  2: $spacer * .5,
+  3: $spacer,
+  4: $spacer * 1.5,
+  5: $spacer * 3,
+  216: $spacer * 13.5,
+  95: $spacer * 5.9375
+); 
+
 // Import Bootstrap 5
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
 // Theme styles
 @import "global";
 @import "font";
-@import "header";
+@import "navbar";
 @import "slider";
 @import "features";
 @import "classes";
