@@ -12948,6 +12948,10 @@ h4, .h4, h5, .h5, h6, .h6 {
   text-transform: uppercase;
 }
 
+.text-grey-dark {
+  color: #1d1d1d;
+}
+
 body {
   font-weight: 400;
   line-height: 30px;
@@ -12976,37 +12980,6 @@ main {
 
 .bg-dark {
   background: #242424 !important;
-}
-
-.section-title {
-  margin-bottom: 70px;
-}
-
-.section-title h2, .section-title .h2 {
-  text-transform: uppercase;
-  text-align: center;
-  color: #2d2424;
-  position: relative;
-}
-
-.section-title h2:after, .section-title .h2:after {
-  content: "";
-  width: 74px;
-  height: 1px;
-  background: #2d2424;
-  margin: auto;
-  position: absolute;
-  bottom: -17px;
-  left: 0;
-  right: 0;
-}
-
-.section-title h2 span, .section-title .h2 span {
-  font-weight: 600;
-}
-
-.text-grey-dark {
-  color: #1d1d1d;
 }
 
 @font-face {
@@ -13109,10 +13082,6 @@ main {
   margin: 0 32px;
   padding: 0;
   font-size: .875rem;
-}
-
-.slider {
-  margin-bottom: 95px;
 }
 
 .features {
@@ -13327,6 +13296,33 @@ main {
   min-width: 0;
   opacity: .7;
   transition: opacity .3s ease-in-out;
+}
+
+.section-title {
+  margin-bottom: 70px;
+}
+
+.section-title h2, .section-title .h2 {
+  text-transform: uppercase;
+  text-align: center;
+  color: #2d2424;
+  position: relative;
+}
+
+.section-title h2:after, .section-title .h2:after {
+  content: "";
+  width: 74px;
+  height: 1px;
+  background: #2d2424;
+  margin: auto;
+  position: absolute;
+  bottom: -17px;
+  left: 0;
+  right: 0;
+}
+
+.section-title h2 span, .section-title .h2 span {
+  font-weight: 600;
 }
 
 /*# sourceMappingURL=index.b10d73a7.css.map */

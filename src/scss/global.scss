@@ -31,6 +31,10 @@ h6, .h6{
     text-transform: uppercase;
 }
 
+.text-grey-dark{
+    color: #1D1D1D;
+}
+
 // Body
 body{
     font-weight: 400;
@@ -62,37 +66,4 @@ main{
 // Backgrounds
 .bg-dark{
     background: #242424 !important;
-}
-
-// Section Title Component
-.section-title{
-    margin-bottom: 70px;
-    
-    h2{
-        text-transform: uppercase;
-        text-align: center;
-        position: relative;
-        color: #2D2424;
-
-        &:after{
-            content: '';
-            width: 74px;
-            height: 1px;
-            background: #2D2424;
-            position: absolute;
-            left: 0;
-            right: 0;
-            margin: auto;
-            bottom: -17px;
-        }
-
-        span{
-            font-weight: 600;
-        }
-    }
-}
-
-// Colors
-.text-grey-dark{
-    color: #1D1D1D;
 }
