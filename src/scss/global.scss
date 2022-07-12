@@ -21,6 +21,7 @@ h3, .h3{
 
 h4, .h4{
     text-transform: uppercase;
+    font-weight: 300;
 }
 
 h5, .h5{
@@ -45,6 +46,11 @@ main{
     margin-top: -146px;
 }
 
+header{
+    position: relative;
+    z-index: 999;
+}
+
 // Buttons
 .btn{
     border-radius: 50px;
@@ -66,4 +72,22 @@ main{
 // Backgrounds
 .bg-dark{
     background: #242424 !important;
+}
+
+.background-image-1{
+    background: url('../img/background-1.png') no-repeat;
+    width: 334px;
+    height: 1411px;
+    z-index: -1;
+    left: 0;
+    top: 172px;
+}
+
+.background-image-2{
+    background: url('../img/background-2.png') no-repeat;
+    width: 361px;
+    height: 1673px;
+    right: 0;
+    top: -8px;
+    z-index: -1;
 }

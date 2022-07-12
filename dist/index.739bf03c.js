@@ -504,7 +504,12 @@ function hmrAcceptRun(bundle, id) {
 
 },{}],"ebWYT":[function(require,module,exports) {
 var _bootstrap = require("bootstrap");
-const a = 1;
+const xhr = new XMLHttpRequest();
+xhr.open("GET", "https://jsonplaceholder.typicode.com/posts/1", true);
+xhr.addEventListener("load", function(e) {
+    if (xhr.status === 200) console.log(xhr.response);
+});
+xhr.send();
 
 },{"bootstrap":"h36JB"}],"h36JB":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");

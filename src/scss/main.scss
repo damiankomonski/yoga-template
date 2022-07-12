@@ -61,7 +61,10 @@ $spacers: (
   4: $spacer * 1.5,
   5: $spacer * 3,
   216: $spacer * 13.5,
-  95: $spacer * 5.9375
+  95: $spacer * 5.9375,
+  122: $spacer * 6.875,
+  12: $spacer * 0.75,
+  180: $spacer * 11.25
 ); 
 
 // Import Bootstrap 5
@@ -71,8 +74,6 @@ $spacers: (
 @import "global";
 @import "font";
 @import "navbar";
-@import "features";
-@import "classes";
 @import "testimonials";
 @import "gallery";
 @import "newsletter";
@@ -80,3 +81,4 @@ $spacers: (
 @import "blog";
 @import "follow-instagram";
 @import "section-title";
+@import "class-item";
