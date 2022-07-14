@@ -13,8 +13,9 @@ $container-max-widths: (
   xxl: 1394px
 );
 
-//Colors
+// Colors
 $primary: #73A35A;
+$dark: #242424;
 
 //Headings variables
 $headings-font-family: 'Poppins', sans-serif;
@@ -64,8 +65,23 @@ $spacers: (
   95: $spacer * 5.9375,
   122: $spacer * 6.875,
   12: $spacer * 0.75,
-  180: $spacer * 11.25
-); 
+  180: $spacer * 11.25,
+  174: $spacer * 10.875,
+  164: $spacer * 10.25,
+  117: $spacer * 7.3125,
+  90: $spacer * 5.625,
+  83: $spacer * 5.1875
+);
+
+// Import Bootstrap 5
+@import "../../node_modules/bootstrap/scss/_functions";
+@import "../../node_modules/bootstrap/scss/_variables";
+
+// Colors
+$custom-theme-color: (
+  "primarylight": #E3F5D9
+);
+$theme-colors: map-merge($custom-theme-color, $theme-colors);
 
 // Import Bootstrap 5
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
@@ -74,11 +90,10 @@ $spacers: (
 @import "global";
 @import "font";
 @import "navbar";
-@import "testimonials";
-@import "gallery";
-@import "newsletter";
 @import "event-calendar";
 @import "blog";
 @import "follow-instagram";
 @import "section-title";
 @import "class-item";
+@import "big-quote";
+@import "gallery-item";

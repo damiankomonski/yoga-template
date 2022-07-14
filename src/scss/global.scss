@@ -36,6 +36,14 @@ h6, .h6{
     color: #1D1D1D;
 }
 
+.text-grey-2{
+    color: #2D2424;
+}
+
+.font-size-big{
+    font-size: 1.3125rem;
+}
+
 // Body
 body{
     font-weight: 400;
@@ -70,10 +78,6 @@ header{
 }
 
 // Backgrounds
-.bg-dark{
-    background: #242424 !important;
-}
-
 .background-image-1{
     background: url('../img/background-1.png') no-repeat;
     width: 334px;
