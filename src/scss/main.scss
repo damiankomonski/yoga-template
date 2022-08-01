@@ -70,7 +70,13 @@ $spacers: (
   164: $spacer * 10.25,
   117: $spacer * 7.3125,
   90: $spacer * 5.625,
-  83: $spacer * 5.1875
+  83: $spacer * 5.1875,
+  48: $spacer * 3,
+  22: $spacer * 1.375,
+  40: $spacer * 2.5,
+  103: $spacer * 6.4375,
+  84: $spacer * 5.25,
+  20: $spacer * 1.25
 );
 
 // Import Bootstrap 5
@@ -79,7 +85,8 @@ $spacers: (
 
 // Colors
 $custom-theme-color: (
-  "primarylight": #E3F5D9
+  "primarylight": #E3F5D9,
+  "greylight": #CCCCCC
 );
 $theme-colors: map-merge($custom-theme-color, $theme-colors);
 
