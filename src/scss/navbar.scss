@@ -1,20 +1,42 @@
 .navbar{
+    @include media-breakpoint-down(xl){
+        padding: 2.5rem 0;
+    }
+
+    @include media-breakpoint-down(md){
+        padding: 2rem 0;
+    }
+
     .navbar-brand{
-        margin-right: 95px;
-        margin-left: 97px;
+        margin-right: 5.9375rem;
+        margin-left: 1.875rem;
+
+        @include media-breakpoint-down(xl){
+            margin-left: 0;
+            margin-right: 0;
+        }
     }
 
     .navbar-collapse{
         .navbar-nav{
             font-family: 'Poppins', sans-serif;
 
+            @include media-breakpoint-down(xl){
+                margin-top: 1rem;
+            }
+
             .nav-link{
                 text-transform: uppercase;
                 color: #202020;
                 font-size: 0.875rem;
-                margin: 0 32px;
+                margin: 0 2rem;
                 padding: 0;
                 letter-spacing: 0.1875rem;
+
+                @include media-breakpoint-down(xl){
+                    margin: .25rem 0;
+                    padding: .25rem 0;
+                }
             }
         }
     }
