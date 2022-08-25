@@ -5,6 +5,8 @@ https://templatesjungle.com/downloads/divineyoga-free-yoga-teacher-studio-figma-
 
 Work in progress...
 
+[Watch live version](https://koski.studio/yoga/index.html)
+
 ## Technologies
 - HTML
 - SCSS
