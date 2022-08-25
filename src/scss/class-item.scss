@@ -1,6 +1,10 @@
 .class-item{
-    width: 591px;
+    // width: 591px;
     text-align: center;
+
+    @include media-breakpoint-up(md){
+        width: 312px;
+    }
 
     a{
         text-decoration: none;
@@ -16,7 +20,7 @@
 
         p{
             font-size: 1rem;
-            margin-top: 24px;
+            margin-top: 1rem;
             color: #111111;
             text-transform: uppercase;
             font-family: 'Poppins', sans-serif;

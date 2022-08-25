@@ -1,8 +1,8 @@
 .blog{
-    margin-bottom: 110px;
+    margin-bottom: 5rem;
     
     &__news{
-        margin-bottom: 57px;
+        margin-bottom: 32px;
 
         a{
             text-decoration: none;
@@ -19,6 +19,7 @@
             
             img{
                 margin-bottom: 26px;
+                width: 100%;
             }
         }
     }

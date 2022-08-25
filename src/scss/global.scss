@@ -4,9 +4,8 @@ h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6{
 }
 
 h1, .h1{
-    line-height: 5.625rem;
-    margin-bottom: 1.875rem;
-    font-weight: 300;
+    // line-height: 5.625rem;
+    margin-bottom: 1.5rem;
     text-transform: uppercase;
 }
 
@@ -15,13 +14,12 @@ h2, .h2{
 }
 
 h3, .h3{
-    line-height: 48px;
+    // line-height: 48px;
     text-transform: uppercase;
 }
 
 h4, .h4{
     text-transform: uppercase;
-    font-weight: 300;
 }
 
 h5, .h5{
@@ -32,16 +30,8 @@ h6, .h6{
     text-transform: uppercase;
 }
 
-.text-grey-dark{
-    color: #1D1D1D;
-}
-
-.text-grey-2{
-    color: #2D2424;
-}
-
 .font-size-big{
-    font-size: 1.3125rem;
+    font-size: 1.125rem;
 }
 
 // Body
@@ -51,11 +41,10 @@ body{
 }
 
 main{
-    margin-top: -146px;
+    // margin-top: -146px;
 }
 
 header{
-    position: relative;
     z-index: 999;
 }
 
@@ -80,23 +69,42 @@ header{
 // Backgrounds
 .background-image-1{
     background: url('../img/background-1.png') no-repeat;
-    width: 334px;
-    height: 1411px;
+    background-size: 100% auto;
+    width: 76px;
+    height: 320px;
     z-index: -1;
     left: 0;
-    top: 172px;
+    top: -1.875rem;
+
+    @include media-breakpoint-up(sm){
+        width: 110px;
+        height: 463px;
+    }
+
+    @include media-breakpoint-up(md){
+        width: 125px;
+        height: 526px;
+    }
 }
 
 .background-image-2{
     background: url('../img/background-2.png') no-repeat;
-    width: 361px;
-    height: 1673px;
+    background-size: 100% auto;
+    width: 90px;
+    height: 416px;
     right: 0;
-    top: -8px;
+    top: 6.5rem;
     z-index: -1;
-}
+    
+    @include media-breakpoint-up(sm){
+        width: 119px;
+        height: 550px;
+        top: 3.5rem
+    }
 
-// List
-.list-style-no{
-    list-style: none;
+    @include media-breakpoint-up(md){
+        width: 146px;
+        height: 675px;
+        top: 1.5rem;
+    }
 }

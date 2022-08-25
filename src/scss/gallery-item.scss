@@ -1,6 +1,6 @@
 .gallery-item{
     float: left;
-    margin-bottom: 54px;
+    margin-bottom: 24px;
     position: relative;
     transition: opacity 0.3s ease-in-out;
 
@@ -9,16 +9,25 @@
     }
 
     &:first-child{
-        margin-right: 48px;
+        // margin-right: 48px;
+    }
+
+    img{
+        width: 100%;
     }
 
     p{
         position: absolute;
-        right: 85px;
-        bottom: 40px;
+        right: 24px;
+        bottom: 24px;
         color: $white;
         font-size: 1.5rem;
         font-weight: 700;
         margin-bottom: 0;
+
+        @include media-breakpoint-up(md){
+            right: 40px;
+            bottom: 56px;
+        }
     }
 }
