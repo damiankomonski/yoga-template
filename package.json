@@ -10,10 +10,10 @@
   "author": "Damian Komoński",
   "license": "ISC",
   "dependencies": {
-    "bootstrap": "^5.2.0-beta1"
+    "bootstrap": "^5.2.0"
   },
   "devDependencies": {
-    "@parcel/transformer-sass": "^2.6.0",
-    "parcel": "^2.6.0"
+    "@parcel/transformer-sass": "^2.6.2",
+    "parcel": "^2.6.2"
   }
 }

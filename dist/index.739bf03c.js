@@ -142,7 +142,7 @@
       this[globalName] = mainExports;
     }
   }
-})({"aRq6p":[function(require,module,exports) {
+})({"cVgJb":[function(require,module,exports) {
 "use strict";
 var global = arguments[3];
 var HMR_HOST = null;
@@ -150,7 +150,7 @@ var HMR_PORT = null;
 var HMR_SECURE = false;
 var HMR_ENV_HASH = "d6ea1d42532a7575";
 module.bundle.HMR_BUNDLE_ID = "ba60c367739bf03c";
-/* global HMR_HOST, HMR_PORT, HMR_ENV_HASH, HMR_SECURE, chrome, browser, importScripts */ /*::
+/* global HMR_HOST, HMR_PORT, HMR_ENV_HASH, HMR_SECURE, chrome, browser, globalThis, __parcel__import__, __parcel__importScripts__, ServiceWorkerGlobalScope */ /*::
 import type {
   HMRAsset,
   HMRMessage,
@@ -180,6 +180,8 @@ interface ParcelModule {
 interface ExtensionContext {
   runtime: {|
     reload(): void,
+    getURL(url: string): string;
+    getManifest(): {manifest_version: number, ...};
   |};
 }
 declare var module: {bundle: ParcelRequire, ...};
@@ -189,6 +191,10 @@ declare var HMR_ENV_HASH: string;
 declare var HMR_SECURE: boolean;
 declare var chrome: ExtensionContext;
 declare var browser: ExtensionContext;
+declare var __parcel__import__: (string) => Promise<void>;
+declare var __parcel__importScripts__: (string) => Promise<void>;
+declare var globalThis: typeof self;
+declare var ServiceWorkerGlobalScope: Object;
 */ var OVERLAY_ID = "__parcel__error__overlay__";
 var OldModule = module.bundle.Module;
 function Module(moduleName) {
@@ -219,7 +225,8 @@ if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== "undefined") {
     var hostname = getHostname();
     var port = getPort();
     var protocol = HMR_SECURE || location.protocol == "https:" && !/localhost|127.0.0.1|0.0.0.0/.test(hostname) ? "wss" : "ws";
-    var ws = new WebSocket(protocol + "://" + hostname + (port ? ":" + port : "") + "/"); // Safari doesn't support sourceURL in error stacks.
+    var ws = new WebSocket(protocol + "://" + hostname + (port ? ":" + port : "") + "/"); // Web extension context
+    var extCtx = typeof chrome === "undefined" ? typeof browser === "undefined" ? null : browser : chrome; // Safari doesn't support sourceURL in error stacks.
     // eval may also be disabled via CSP, so do a quick check.
     var supportsSourceURL = false;
     try {
@@ -247,12 +254,7 @@ if ((!parent || !parent.isParcelRequire) && typeof WebSocket !== "undefined") {
                     var id = assetsToAccept[i][1];
                     if (!acceptedAssets[id]) hmrAcceptRun(assetsToAccept[i][0], id);
                 }
-            } else if ("reload" in location) location.reload();
-            else {
-                // Web extension context
-                var ext = typeof chrome === "undefined" ? typeof browser === "undefined" ? null : browser : chrome;
-                if (ext && ext.runtime && ext.runtime.reload) ext.runtime.reload();
-            }
+            } else fullReload();
         }
         if (data.type === "error") {
             // Log parcel errors to console
@@ -309,6 +311,10 @@ ${frame.code}`;
     overlay.innerHTML = errorHTML;
     return overlay;
 }
+function fullReload() {
+    if ("reload" in location) location.reload();
+    else if (extCtx && extCtx.runtime && extCtx.runtime.reload) extCtx.runtime.reload();
+}
 function getParents(bundle, id) /*: Array<[ParcelRequire, string]> */ {
     var modules = bundle.modules;
     if (!modules) return [];
@@ -349,6 +355,32 @@ function reloadCSS() {
         cssTimeout = null;
     }, 50);
 }
+function hmrDownload(asset) {
+    if (asset.type === "js") {
+        if (typeof document !== "undefined") {
+            let script = document.createElement("script");
+            script.src = asset.url + "?t=" + Date.now();
+            if (asset.outputFormat === "esmodule") script.type = "module";
+            return new Promise((resolve, reject)=>{
+                var _document$head;
+                script.onload = ()=>resolve(script);
+                script.onerror = reject;
+                (_document$head = document.head) === null || _document$head === void 0 || _document$head.appendChild(script);
+            });
+        } else if (typeof importScripts === "function") {
+            // Worker scripts
+            if (asset.outputFormat === "esmodule") return import(asset.url + "?t=" + Date.now());
+            else return new Promise((resolve, reject)=>{
+                try {
+                    importScripts(asset.url + "?t=" + Date.now());
+                    resolve();
+                } catch (err) {
+                    reject(err);
+                }
+            });
+        }
+    }
+}
 async function hmrApplyUpdates(assets) {
     global.parcelHotUpdate = Object.create(null);
     let scriptsToRemove;
@@ -361,24 +393,20 @@ async function hmrApplyUpdates(assets) {
         // This path is also taken if a CSP disallows eval.
         if (!supportsSourceURL) {
             let promises = assets.map((asset)=>{
-                if (asset.type === "js") {
-                    if (typeof document !== "undefined") {
-                        let script = document.createElement("script");
-                        script.src = asset.url;
-                        return new Promise((resolve, reject)=>{
-                            var _document$head;
-                            script.onload = ()=>resolve(script);
-                            script.onerror = reject;
-                            (_document$head = document.head) === null || _document$head === void 0 || _document$head.appendChild(script);
-                        });
-                    } else if (typeof importScripts === "function") return new Promise((resolve, reject)=>{
-                        try {
-                            importScripts(asset.url);
-                        } catch (err) {
-                            reject(err);
+                var _hmrDownload;
+                return (_hmrDownload = hmrDownload(asset)) === null || _hmrDownload === void 0 ? void 0 : _hmrDownload.catch((err)=>{
+                    // Web extension bugfix for Chromium
+                    // https://bugs.chromium.org/p/chromium/issues/detail?id=1255412#c12
+                    if (extCtx && extCtx.runtime && extCtx.runtime.getManifest().manifest_version == 3) {
+                        if (typeof ServiceWorkerGlobalScope != "undefined" && global instanceof ServiceWorkerGlobalScope) {
+                            extCtx.runtime.reload();
+                            return;
                         }
-                    });
-                }
+                        asset.url = extCtx.runtime.getURL("/__parcel_hmr_proxy__?url=" + encodeURIComponent(asset.url + "?t=" + Date.now()));
+                        return hmrDownload(asset);
+                    }
+                    throw err;
+                });
             });
             scriptsToRemove = await Promise.all(promises);
         }
@@ -415,6 +443,7 @@ function hmrApply(bundle, asset) {
             if (supportsSourceURL) // Global eval. We would use `new Function` here but browser
             // support for source maps is better with eval.
             (0, eval)(asset.output);
+             // $FlowFixMe
             let fn = global.parcelHotUpdate[asset.id];
             modules[asset.id] = [
                 fn,
@@ -527,18 +556,18 @@ parcelHelpers.export(exports, "Tab", ()=>Tab);
 parcelHelpers.export(exports, "Toast", ()=>Toast);
 parcelHelpers.export(exports, "Tooltip", ()=>Tooltip);
 /*!
-  * Bootstrap v5.2.0-beta1 (https://getbootstrap.com/)
+  * Bootstrap v5.2.0 (https://getbootstrap.com/)
   * Copyright 2011-2022 The Bootstrap Authors (https://github.com/twbs/bootstrap/graphs/contributors)
   * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
   */ var _core = require("@popperjs/core");
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): util/index.js
+ * Bootstrap (v5.2.0): util/index.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ const MAX_UID = 1000000;
 const MILLISECONDS_MULTIPLIER = 1000;
-const TRANSITION_END = "transitionend"; // Shoutout AngusCroll (https://goo.gl/pxwQGp)
+const TRANSITION_END = "transitionend"; // Shout-out Angus Croll (https://goo.gl/pxwQGp)
 const toType = (object)=>{
     if (object === null || object === undefined) return `${object}`;
     return Object.prototype.toString.call(object).match(/\s([a-z]+)/i)[1].toLowerCase();
@@ -711,7 +740,7 @@ const executeAfterTransition = (callback, transitionElement, waitForTransition =
 };
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): dom/event-handler.js
+ * Bootstrap (v5.2.0): dom/event-handler.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -775,18 +804,20 @@ const nativeEvents = new Set([
 ]);
 /**
  * Private methods
- */ function getUidEvent(element, uid) {
+ */ function makeEventUid(element, uid) {
     return uid && `${uid}::${uidEvent++}` || element.uidEvent || uidEvent++;
 }
-function getEvent(element) {
-    const uid = getUidEvent(element);
+function getElementEvents(element) {
+    const uid = makeEventUid(element);
     element.uidEvent = uid;
     eventRegistry[uid] = eventRegistry[uid] || {};
     return eventRegistry[uid];
 }
 function bootstrapHandler(element, fn) {
     return function handler(event) {
-        event.delegateTarget = element;
+        hydrateObj(event, {
+            delegateTarget: element
+        });
         if (handler.oneOff) EventHandler.off(element, event.type, fn);
         return fn.apply(element, [
             event
@@ -798,7 +829,9 @@ function bootstrapDelegationHandler(element, selector, fn) {
         const domElements = element.querySelectorAll(selector);
         for(let { target  } = event; target && target !== this; target = target.parentNode)for (const domElement of domElements){
             if (domElement !== target) continue;
-            event.delegateTarget = target;
+            hydrateObj(event, {
+                delegateTarget: target
+            });
             if (handler.oneOff) EventHandler.off(element, event.type, selector, fn);
             return fn.apply(target, [
                 event
@@ -806,26 +839,23 @@ function bootstrapDelegationHandler(element, selector, fn) {
         }
     };
 }
-function findHandler(events, handler, delegationSelector = null) {
-    return Object.values(events).find((event)=>event.originalHandler === handler && event.delegationSelector === delegationSelector);
+function findHandler(events, callable, delegationSelector = null) {
+    return Object.values(events).find((event)=>event.callable === callable && event.delegationSelector === delegationSelector);
 }
 function normalizeParameters(originalTypeEvent, handler, delegationFunction) {
-    const delegation = typeof handler === "string";
-    const originalHandler = delegation ? delegationFunction : handler;
+    const isDelegated = typeof handler === "string"; // todo: tooltip passes `false` instead of selector, so we need to check
+    const callable = isDelegated ? delegationFunction : handler || delegationFunction;
     let typeEvent = getTypeEvent(originalTypeEvent);
     if (!nativeEvents.has(typeEvent)) typeEvent = originalTypeEvent;
     return [
-        delegation,
-        originalHandler,
+        isDelegated,
+        callable,
         typeEvent
     ];
 }
 function addHandler(element, originalTypeEvent, handler, delegationFunction, oneOff) {
     if (typeof originalTypeEvent !== "string" || !element) return;
-    if (!handler) {
-        handler = delegationFunction;
-        delegationFunction = null;
-    } // in case of mouseenter or mouseleave wrap the handler within a function that checks for its DOM position
+    let [isDelegated, callable, typeEvent] = normalizeParameters(originalTypeEvent, handler, delegationFunction); // in case of mouseenter or mouseleave wrap the handler within a function that checks for its DOM position
     // this prevents the handler from being dispatched the same way as mouseover or mouseout does
     if (originalTypeEvent in customEvents) {
         const wrapFunction = (fn)=>{
@@ -833,25 +863,23 @@ function addHandler(element, originalTypeEvent, handler, delegationFunction, one
                 if (!event.relatedTarget || event.relatedTarget !== event.delegateTarget && !event.delegateTarget.contains(event.relatedTarget)) return fn.call(this, event);
             };
         };
-        if (delegationFunction) delegationFunction = wrapFunction(delegationFunction);
-        else handler = wrapFunction(handler);
+        callable = wrapFunction(callable);
     }
-    const [delegation, originalHandler, typeEvent] = normalizeParameters(originalTypeEvent, handler, delegationFunction);
-    const events = getEvent(element);
+    const events = getElementEvents(element);
     const handlers = events[typeEvent] || (events[typeEvent] = {});
-    const previousFunction = findHandler(handlers, originalHandler, delegation ? handler : null);
+    const previousFunction = findHandler(handlers, callable, isDelegated ? handler : null);
     if (previousFunction) {
         previousFunction.oneOff = previousFunction.oneOff && oneOff;
         return;
     }
-    const uid = getUidEvent(originalHandler, originalTypeEvent.replace(namespaceRegex, ""));
-    const fn1 = delegation ? bootstrapDelegationHandler(element, handler, delegationFunction) : bootstrapHandler(element, handler);
-    fn1.delegationSelector = delegation ? handler : null;
-    fn1.originalHandler = originalHandler;
+    const uid = makeEventUid(callable, originalTypeEvent.replace(namespaceRegex, ""));
+    const fn1 = isDelegated ? bootstrapDelegationHandler(element, handler, callable) : bootstrapHandler(element, callable);
+    fn1.delegationSelector = isDelegated ? handler : null;
+    fn1.callable = callable;
     fn1.oneOff = oneOff;
     fn1.uidEvent = uid;
     handlers[uid] = fn1;
-    element.addEventListener(typeEvent, fn1, delegation);
+    element.addEventListener(typeEvent, fn1, isDelegated);
 }
 function removeHandler(element, events, typeEvent, handler, delegationSelector) {
     const fn = findHandler(events[typeEvent], handler, delegationSelector);
@@ -863,7 +891,7 @@ function removeNamespacedHandlers(element, events, typeEvent, namespace) {
     const storeElementEvent = events[typeEvent] || {};
     for (const handlerKey of Object.keys(storeElementEvent))if (handlerKey.includes(namespace)) {
         const event = storeElementEvent[handlerKey];
-        removeHandler(element, events, typeEvent, event.originalHandler, event.delegationSelector);
+        removeHandler(element, events, typeEvent, event.callable, event.delegationSelector);
     }
 }
 function getTypeEvent(event) {
@@ -880,23 +908,23 @@ const EventHandler = {
     },
     off (element, originalTypeEvent, handler, delegationFunction) {
         if (typeof originalTypeEvent !== "string" || !element) return;
-        const [delegation, originalHandler, typeEvent] = normalizeParameters(originalTypeEvent, handler, delegationFunction);
+        const [isDelegated, callable, typeEvent] = normalizeParameters(originalTypeEvent, handler, delegationFunction);
         const inNamespace = typeEvent !== originalTypeEvent;
-        const events = getEvent(element);
+        const events = getElementEvents(element);
+        const storeElementEvent = events[typeEvent] || {};
         const isNamespace = originalTypeEvent.startsWith(".");
-        if (typeof originalHandler !== "undefined") {
+        if (typeof callable !== "undefined") {
             // Simplest case: handler is passed, remove that listener ONLY.
-            if (!events || !events[typeEvent]) return;
-            removeHandler(element, events, typeEvent, originalHandler, delegation ? handler : null);
+            if (!Object.keys(storeElementEvent).length) return;
+            removeHandler(element, events, typeEvent, callable, isDelegated ? handler : null);
             return;
         }
         if (isNamespace) for (const elementEvent of Object.keys(events))removeNamespacedHandlers(element, events, elementEvent, originalTypeEvent.slice(1));
-        const storeElementEvent = events[typeEvent] || {};
         for (const keyHandlers of Object.keys(storeElementEvent)){
             const handlerKey = keyHandlers.replace(stripUidRegex, "");
             if (!inNamespace || originalTypeEvent.includes(handlerKey)) {
                 const event = storeElementEvent[keyHandlers];
-                removeHandler(element, events, typeEvent, event.originalHandler, event.delegationSelector);
+                removeHandler(element, events, typeEvent, event.callable, event.delegationSelector);
             }
         }
     },
@@ -916,24 +944,33 @@ const EventHandler = {
             nativeDispatch = !jQueryEvent.isImmediatePropagationStopped();
             defaultPrevented = jQueryEvent.isDefaultPrevented();
         }
-        const evt = new Event(event, {
+        let evt = new Event(event, {
             bubbles,
             cancelable: true
-        }); // merge custom information in our event
-        if (typeof args !== "undefined") for (const key of Object.keys(args))Object.defineProperty(evt, key, {
-            get () {
-                return args[key];
-            }
         });
+        evt = hydrateObj(evt, args);
         if (defaultPrevented) evt.preventDefault();
         if (nativeDispatch) element.dispatchEvent(evt);
         if (evt.defaultPrevented && jQueryEvent) jQueryEvent.preventDefault();
         return evt;
     }
 };
+function hydrateObj(obj, meta) {
+    for (const [key, value] of Object.entries(meta || {}))try {
+        obj[key] = value;
+    } catch (_unused) {
+        Object.defineProperty(obj, key, {
+            configurable: true,
+            get () {
+                return value;
+            }
+        });
+    }
+    return obj;
+}
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): dom/data.js
+ * Bootstrap (v5.2.0): dom/data.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -964,7 +1001,7 @@ const Data = {
 };
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): dom/manipulator.js
+ * Bootstrap (v5.2.0): dom/manipulator.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ function normalizeData(value) {
@@ -1006,7 +1043,7 @@ const Manipulator = {
 };
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): util/config.js
+ * Bootstrap (v5.2.0): util/config.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -1051,12 +1088,12 @@ const Manipulator = {
 }
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): base-component.js
+ * Bootstrap (v5.2.0): base-component.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
  * Constants
- */ const VERSION = "5.2.0-beta1";
+ */ const VERSION = "5.2.0";
 /**
  * Class definition
  */ class BaseComponent extends Config {
@@ -1103,7 +1140,7 @@ const Manipulator = {
 }
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): util/component-functions.js
+ * Bootstrap (v5.2.0): util/component-functions.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ const enableDismissTrigger = (component, method = "hide")=>{
@@ -1122,7 +1159,7 @@ const Manipulator = {
 };
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): alert.js
+ * Bootstrap (v5.2.0): alert.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -1170,7 +1207,7 @@ const CLASS_NAME_SHOW$8 = "show";
  */ defineJQueryPlugin(Alert);
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): button.js
+ * Bootstrap (v5.2.0): button.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -1213,7 +1250,7 @@ const EVENT_CLICK_DATA_API$6 = `click${EVENT_KEY$a}${DATA_API_KEY$6}`;
  */ defineJQueryPlugin(Button);
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): dom/selector-engine.js
+ * Bootstrap (v5.2.0): dom/selector-engine.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -1274,7 +1311,7 @@ const EVENT_CLICK_DATA_API$6 = `click${EVENT_KEY$a}${DATA_API_KEY$6}`;
 };
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): util/swipe.js
+ * Bootstrap (v5.2.0): util/swipe.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -1291,14 +1328,14 @@ const POINTER_TYPE_PEN = "pen";
 const CLASS_NAME_POINTER_EVENT = "pointer-event";
 const SWIPE_THRESHOLD = 40;
 const Default$c = {
+    endCallback: null,
     leftCallback: null,
-    rightCallback: null,
-    endCallback: null
+    rightCallback: null
 };
 const DefaultType$c = {
+    endCallback: "(function|null)",
     leftCallback: "(function|null)",
-    rightCallback: "(function|null)",
-    endCallback: "(function|null)"
+    rightCallback: "(function|null)"
 };
 /**
  * Class definition
@@ -1367,7 +1404,7 @@ const DefaultType$c = {
 }
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): carousel.js
+ * Bootstrap (v5.2.0): carousel.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -1419,9 +1456,10 @@ const Default$b = {
 };
 const DefaultType$b = {
     interval: "(number|boolean)",
+    // TODO:v6 remove boolean support
     keyboard: "boolean",
-    ride: "(boolean|string)",
     pause: "(string|boolean)",
+    ride: "(boolean|string)",
     touch: "boolean",
     wrap: "boolean"
 };
@@ -1663,7 +1701,7 @@ EventHandler.on(window, EVENT_LOAD_DATA_API$3, ()=>{
  */ defineJQueryPlugin(Carousel);
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): collapse.js
+ * Bootstrap (v5.2.0): collapse.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -1688,12 +1726,12 @@ const HEIGHT = "height";
 const SELECTOR_ACTIVES = ".collapse.show, .collapse.collapsing";
 const SELECTOR_DATA_TOGGLE$4 = '[data-bs-toggle="collapse"]';
 const Default$a = {
-    toggle: true,
-    parent: null
+    parent: null,
+    toggle: true
 };
 const DefaultType$a = {
-    toggle: "boolean",
-    parent: "(null|element)"
+    parent: "(null|element)",
+    toggle: "boolean"
 };
 /**
  * Class definition
@@ -1838,7 +1876,7 @@ const DefaultType$a = {
  */ defineJQueryPlugin(Collapse);
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): dropdown.js
+ * Bootstrap (v5.2.0): dropdown.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -1880,23 +1918,23 @@ const PLACEMENT_LEFT = isRTL() ? "right-start" : "left-start";
 const PLACEMENT_TOPCENTER = "top";
 const PLACEMENT_BOTTOMCENTER = "bottom";
 const Default$9 = {
+    autoClose: true,
+    boundary: "clippingParents",
+    display: "dynamic",
     offset: [
         0,
         2
     ],
-    boundary: "clippingParents",
-    reference: "toggle",
-    display: "dynamic",
     popperConfig: null,
-    autoClose: true
+    reference: "toggle"
 };
 const DefaultType$9 = {
-    offset: "(array|string|function)",
+    autoClose: "(boolean|string)",
     boundary: "(string|element)",
-    reference: "(string|element|object)",
     display: "string",
+    offset: "(array|string|function)",
     popperConfig: "(null|object|function)",
-    autoClose: "(boolean|string)"
+    reference: "(string|element|object)"
 };
 /**
  * Class definition
@@ -2112,7 +2150,7 @@ EventHandler.on(document, EVENT_CLICK_DATA_API$3, SELECTOR_DATA_TOGGLE$3, functi
  */ defineJQueryPlugin(Dropdown);
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): util/scrollBar.js
+ * Bootstrap (v5.2.0): util/scrollBar.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -2188,7 +2226,7 @@ const PROPERTY_MARGIN = "margin-right";
 }
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): util/backdrop.js
+ * Bootstrap (v5.2.0): util/backdrop.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -2199,19 +2237,18 @@ const CLASS_NAME_SHOW$5 = "show";
 const EVENT_MOUSEDOWN = `mousedown.bs.${NAME$9}`;
 const Default$8 = {
     className: "modal-backdrop",
+    clickCallback: null,
+    isAnimated: false,
     isVisible: true,
     // if false, we use the backdrop helper without adding any element to the dom
-    isAnimated: false,
-    rootElement: "body",
-    // give the choice to place backdrop under different elements
-    clickCallback: null
+    rootElement: "body" // give the choice to place backdrop under different elements
 };
 const DefaultType$8 = {
     className: "string",
-    isVisible: "boolean",
+    clickCallback: "(function|null)",
     isAnimated: "boolean",
-    rootElement: "(element|string)",
-    clickCallback: "(function|null)"
+    isVisible: "boolean",
+    rootElement: "(element|string)"
 };
 /**
  * Class definition
@@ -2290,7 +2327,7 @@ const DefaultType$8 = {
 }
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): util/focustrap.js
+ * Bootstrap (v5.2.0): util/focustrap.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -2304,13 +2341,12 @@ const TAB_KEY = "Tab";
 const TAB_NAV_FORWARD = "forward";
 const TAB_NAV_BACKWARD = "backward";
 const Default$7 = {
-    trapElement: null,
-    // The element to trap focus inside of
-    autofocus: true
+    autofocus: true,
+    trapElement: null // The element to trap focus inside of
 };
 const DefaultType$7 = {
-    trapElement: "element",
-    autofocus: "boolean"
+    autofocus: "boolean",
+    trapElement: "element"
 };
 /**
  * Class definition
@@ -2358,7 +2394,7 @@ const DefaultType$7 = {
 }
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): modal.js
+ * Bootstrap (v5.2.0): modal.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -2374,7 +2410,7 @@ const EVENT_HIDDEN$4 = `hidden${EVENT_KEY$4}`;
 const EVENT_SHOW$4 = `show${EVENT_KEY$4}`;
 const EVENT_SHOWN$4 = `shown${EVENT_KEY$4}`;
 const EVENT_RESIZE$1 = `resize${EVENT_KEY$4}`;
-const EVENT_CLICK_DISMISS = `click.dismiss${EVENT_KEY$4}`;
+const EVENT_MOUSEDOWN_DISMISS = `mousedown.dismiss${EVENT_KEY$4}`;
 const EVENT_KEYDOWN_DISMISS$1 = `keydown.dismiss${EVENT_KEY$4}`;
 const EVENT_CLICK_DATA_API$2 = `click${EVENT_KEY$4}${DATA_API_KEY$2}`;
 const CLASS_NAME_OPEN = "modal-open";
@@ -2387,13 +2423,13 @@ const SELECTOR_MODAL_BODY = ".modal-body";
 const SELECTOR_DATA_TOGGLE$2 = '[data-bs-toggle="modal"]';
 const Default$6 = {
     backdrop: true,
-    keyboard: true,
-    focus: true
+    focus: true,
+    keyboard: true
 };
 const DefaultType$6 = {
     backdrop: "(boolean|string)",
-    keyboard: "boolean",
-    focus: "boolean"
+    focus: "boolean",
+    keyboard: "boolean"
 };
 /**
  * Class definition
@@ -2501,7 +2537,7 @@ const DefaultType$6 = {
         EventHandler.on(window, EVENT_RESIZE$1, ()=>{
             if (this._isShown && !this._isTransitioning) this._adjustDialog();
         });
-        EventHandler.on(this._element, EVENT_CLICK_DISMISS, (event)=>{
+        EventHandler.on(this._element, EVENT_MOUSEDOWN_DISMISS, (event)=>{
             if (event.target !== event.currentTarget) // click is inside modal-dialog
             return;
             if (this._config.backdrop === "static") {
@@ -2597,7 +2633,7 @@ enableDismissTrigger(Modal);
  */ defineJQueryPlugin(Modal);
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): offcanvas.js
+ * Bootstrap (v5.2.0): offcanvas.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -2667,7 +2703,7 @@ const DefaultType$5 = {
         this._element.setAttribute("role", "dialog");
         this._element.classList.add(CLASS_NAME_SHOWING$1);
         const completeCallBack = ()=>{
-            if (!this._config.scroll) this._focustrap.activate();
+            if (!this._config.scroll || this._config.backdrop) this._focustrap.activate();
             this._element.classList.add(CLASS_NAME_SHOW$3);
             this._element.classList.remove(CLASS_NAME_SHOWING$1);
             EventHandler.trigger(this._element, EVENT_SHOWN$3, {
@@ -2770,7 +2806,7 @@ enableDismissTrigger(Offcanvas);
  */ defineJQueryPlugin(Offcanvas);
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): util/sanitizer.js
+ * Bootstrap (v5.2.0): util/sanitizer.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ const uriAttributes = new Set([
@@ -2787,12 +2823,12 @@ const ARIA_ATTRIBUTE_PATTERN = /^aria-[\w-]*$/i;
 /**
  * A pattern that recognizes a commonly useful subset of URLs that are safe.
  *
- * Shoutout to Angular https://github.com/angular/angular/blob/12.2.x/packages/core/src/sanitization/url_sanitizer.ts
+ * Shout-out to Angular https://github.com/angular/angular/blob/12.2.x/packages/core/src/sanitization/url_sanitizer.ts
  */ const SAFE_URL_PATTERN = /^(?:(?:https?|mailto|ftp|tel|file|sms):|[^#&/:?]*(?:[#/?]|$))/i;
 /**
  * A pattern that matches safe data URLs. Only matches image, video and audio types.
  *
- * Shoutout to Angular https://github.com/angular/angular/blob/12.2.x/packages/core/src/sanitization/url_sanitizer.ts
+ * Shout-out to Angular https://github.com/angular/angular/blob/12.2.x/packages/core/src/sanitization/url_sanitizer.ts
  */ const DATA_URL_PATTERN = /^data:(?:image\/(?:bmp|gif|jpeg|jpg|png|tiff|webp)|video\/(?:mpeg|mp4|ogg|webm)|audio\/(?:mp3|oga|ogg|opus));base64,[\d+/a-z]+=*$/i;
 const allowedAttribute = (attribute, allowedAttributeList)=>{
     const attributeName = attribute.nodeName.toLowerCase();
@@ -2874,34 +2910,34 @@ function sanitizeHtml(unsafeHtml, allowList, sanitizeFunction) {
 }
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): util/template-factory.js
+ * Bootstrap (v5.2.0): util/template-factory.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
  * Constants
  */ const NAME$5 = "TemplateFactory";
 const Default$4 = {
-    extraClass: "",
-    template: "<div></div>",
+    allowList: DefaultAllowlist,
     content: {},
     // { selector : text ,  selector2 : text2 , }
+    extraClass: "",
     html: false,
     sanitize: true,
     sanitizeFn: null,
-    allowList: DefaultAllowlist
+    template: "<div></div>"
 };
 const DefaultType$4 = {
-    extraClass: "(string|function)",
-    template: "string",
+    allowList: "object",
     content: "object",
+    extraClass: "(string|function)",
     html: "boolean",
     sanitize: "boolean",
     sanitizeFn: "(null|function)",
-    allowList: "object"
+    template: "string"
 };
 const DefaultContentType = {
-    selector: "(string|element)",
-    entry: "(string|element|function|null)"
+    entry: "(string|element|function|null)",
+    selector: "(string|element)"
 };
 /**
  * Class definition
@@ -2987,7 +3023,7 @@ const DefaultContentType = {
 }
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): tooltip.js
+ * Bootstrap (v5.2.0): tooltip.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -3026,50 +3062,50 @@ const AttachmentMap = {
     LEFT: isRTL() ? "right" : "left"
 };
 const Default$3 = {
+    allowList: DefaultAllowlist,
     animation: true,
-    template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
-    trigger: "hover focus",
-    title: "",
-    delay: 0,
-    html: false,
-    selector: false,
-    placement: "top",
-    offset: [
-        0,
-        0
-    ],
+    boundary: "clippingParents",
     container: false,
+    customClass: "",
+    delay: 0,
     fallbackPlacements: [
         "top",
         "right",
         "bottom",
         "left"
     ],
-    boundary: "clippingParents",
-    customClass: "",
+    html: false,
+    offset: [
+        0,
+        0
+    ],
+    placement: "top",
+    popperConfig: null,
     sanitize: true,
     sanitizeFn: null,
-    allowList: DefaultAllowlist,
-    popperConfig: null
+    selector: false,
+    template: '<div class="tooltip" role="tooltip"><div class="tooltip-arrow"></div><div class="tooltip-inner"></div></div>',
+    title: "",
+    trigger: "hover focus"
 };
 const DefaultType$3 = {
+    allowList: "object",
     animation: "boolean",
-    template: "string",
-    title: "(string|element|function)",
-    trigger: "string",
-    delay: "(number|object)",
-    html: "boolean",
-    selector: "(string|boolean)",
-    placement: "(string|function)",
-    offset: "(array|string|function)",
-    container: "(string|element|boolean)",
-    fallbackPlacements: "array",
     boundary: "(string|element)",
+    container: "(string|element|boolean)",
     customClass: "(string|function)",
+    delay: "(number|object)",
+    fallbackPlacements: "array",
+    html: "boolean",
+    offset: "(array|string|function)",
+    placement: "(string|function)",
+    popperConfig: "(null|object|function)",
     sanitize: "boolean",
     sanitizeFn: "(null|function)",
-    allowList: "object",
-    popperConfig: "(null|object|function)"
+    selector: "(string|boolean)",
+    template: "string",
+    title: "(string|element|function)",
+    trigger: "string"
 };
 /**
  * Class definition
@@ -3082,7 +3118,8 @@ const DefaultType$3 = {
         this._isHovered = false;
         this._activeTrigger = {};
         this._popper = null;
-        this._templateFactory = null; // Protected
+        this._templateFactory = null;
+        this._newContent = null; // Protected
         this.tip = null;
         this._setListeners();
     }
@@ -3133,6 +3170,11 @@ const DefaultType$3 = {
         const shadowRoot = findShadowRoot(this._element);
         const isInTheDom = (shadowRoot || this._element.ownerDocument.documentElement).contains(this._element);
         if (showEvent.defaultPrevented || !isInTheDom) return;
+         // todo v6 remove this OR make it optional
+        if (this.tip) {
+            this.tip.remove();
+            this.tip = null;
+        }
         const tip = this._getTipElement();
         this._element.setAttribute("aria-describedby", tip.getAttribute("id"));
         const { container  } = this._config;
@@ -3141,7 +3183,7 @@ const DefaultType$3 = {
             EventHandler.trigger(this._element, this.constructor.eventName(EVENT_INSERTED));
         }
         if (this._popper) this._popper.update();
-        else this._createPopper(tip);
+        else this._popper = this._createPopper(tip);
         tip.classList.add(CLASS_NAME_SHOW$2); // If this is a touch-enabled device we add extra
         // empty mouseover listeners to the body's immediate children;
         // only needed because of broken event delegation on iOS
@@ -3183,7 +3225,7 @@ const DefaultType$3 = {
         return Boolean(this._getTitle());
     }
     _getTipElement() {
-        if (!this.tip) this.tip = this._createTipElement(this._getContentForTemplate());
+        if (!this.tip) this.tip = this._createTipElement(this._newContent || this._getContentForTemplate());
         return this.tip;
     }
     _createTipElement(content) {
@@ -3197,15 +3239,11 @@ const DefaultType$3 = {
         return tip;
     }
     setContent(content) {
-        let isShown = false;
-        if (this.tip) {
-            isShown = this._isShown();
-            this.tip.remove();
-            this.tip = null;
+        this._newContent = content;
+        if (this._isShown()) {
+            this._disposePopper();
+            this.show();
         }
-        this._disposePopper();
-        this.tip = this._createTipElement(content);
-        if (isShown) this.show();
     }
     _getTemplateFactory(content) {
         if (this._templateFactory) this._templateFactory.changeContent(content);
@@ -3224,7 +3262,7 @@ const DefaultType$3 = {
         };
     }
     _getTitle() {
-        return this._config.title;
+        return this._resolvePossibleFunction(this._config.title) || this._config.originalTitle;
     }
     _initializeOnDelegatedTarget(event) {
         return this.constructor.getOrCreateInstance(event.delegateTarget, this._getDelegateConfig());
@@ -3238,7 +3276,7 @@ const DefaultType$3 = {
     _createPopper(tip) {
         const placement = typeof this._config.placement === "function" ? this._config.placement.call(this, tip, this._element) : this._config.placement;
         const attachment = AttachmentMap[placement.toUpperCase()];
-        this._popper = _core.createPopper(this._element, tip, this._getPopperConfig(attachment));
+        return _core.createPopper(this._element, tip, this._getPopperConfig(attachment));
     }
     _getOffset() {
         const { offset  } = this._config;
@@ -3327,7 +3365,7 @@ const DefaultType$3 = {
     _fixTitle() {
         const title = this._config.originalTitle;
         if (!title) return;
-        if (!this._element.getAttribute("aria-label") && !this._element.textContent) this._element.setAttribute("aria-label", title);
+        if (!this._element.getAttribute("aria-label") && !this._element.textContent.trim()) this._element.setAttribute("aria-label", title);
         this._element.removeAttribute("title");
     }
     _enter() {
@@ -3373,7 +3411,6 @@ const DefaultType$3 = {
             hide: config.delay
         };
         config.originalTitle = this._element.getAttribute("title") || "";
-        config.title = this._resolvePossibleFunction(config.title) || config.originalTitle;
         if (typeof config.title === "number") config.title = config.title.toString();
         if (typeof config.content === "number") config.content = config.content.toString();
         return config;
@@ -3406,7 +3443,7 @@ const DefaultType$3 = {
  */ defineJQueryPlugin(Tooltip);
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): popover.js
+ * Bootstrap (v5.2.0): popover.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -3416,14 +3453,14 @@ const SELECTOR_TITLE = ".popover-header";
 const SELECTOR_CONTENT = ".popover-body";
 const Default$2 = {
     ...Tooltip.Default,
-    placement: "right",
+    content: "",
     offset: [
         0,
         8
     ],
-    trigger: "click",
-    content: "",
-    template: '<div class="popover" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>'
+    placement: "right",
+    template: '<div class="popover" role="tooltip"><div class="popover-arrow"></div><h3 class="popover-header"></h3><div class="popover-body"></div></div>',
+    trigger: "click"
 };
 const DefaultType$2 = {
     ...Tooltip.DefaultType,
@@ -3468,7 +3505,7 @@ const DefaultType$2 = {
  */ defineJQueryPlugin(Popover);
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): scrollspy.js
+ * Bootstrap (v5.2.0): scrollspy.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -3558,7 +3595,8 @@ const DefaultType$1 = {
                 const height = observableSection.offsetTop - this._element.offsetTop;
                 if (root.scrollTo) {
                     root.scrollTo({
-                        top: height
+                        top: height,
+                        behavior: "smooth"
                     });
                     return;
                 } // Chrome 60 doesn't support `scrollTo`
@@ -3663,7 +3701,7 @@ const DefaultType$1 = {
  */ defineJQueryPlugin(ScrollSpy);
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): tab.js
+ * Bootstrap (v5.2.0): tab.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -3730,11 +3768,11 @@ const SELECTOR_DATA_TOGGLE_ACTIVE = `.${CLASS_NAME_ACTIVE}[data-bs-toggle="tab"]
         if (!element) return;
         element.classList.add(CLASS_NAME_ACTIVE);
         this._activate(getElementFromSelector(element)); // Search and activate/show the proper section
-        const isAnimated = element.classList.contains(CLASS_NAME_FADE$1);
         const complete = ()=>{
-            if (isAnimated) // todo: maybe is redundant
-            element.classList.add(CLASS_NAME_SHOW$1);
-            if (element.getAttribute("role") !== "tab") return;
+            if (element.getAttribute("role") !== "tab") {
+                element.classList.add(CLASS_NAME_SHOW$1);
+                return;
+            }
             element.focus();
             element.removeAttribute("tabindex");
             element.setAttribute("aria-selected", true);
@@ -3743,18 +3781,18 @@ const SELECTOR_DATA_TOGGLE_ACTIVE = `.${CLASS_NAME_ACTIVE}[data-bs-toggle="tab"]
                 relatedTarget: relatedElem
             });
         };
-        this._queueCallback(complete, element, isAnimated);
+        this._queueCallback(complete, element, element.classList.contains(CLASS_NAME_FADE$1));
     }
     _deactivate(element, relatedElem) {
         if (!element) return;
         element.classList.remove(CLASS_NAME_ACTIVE);
         element.blur();
         this._deactivate(getElementFromSelector(element)); // Search and deactivate the shown section too
-        const isAnimated = element.classList.contains(CLASS_NAME_FADE$1);
         const complete = ()=>{
-            if (isAnimated) // todo maybe is redundant
-            element.classList.remove(CLASS_NAME_SHOW$1);
-            if (element.getAttribute("role") !== "tab") return;
+            if (element.getAttribute("role") !== "tab") {
+                element.classList.remove(CLASS_NAME_SHOW$1);
+                return;
+            }
             element.setAttribute("aria-selected", false);
             element.setAttribute("tabindex", "-1");
             this._toggleDropDown(element, false);
@@ -3762,7 +3800,7 @@ const SELECTOR_DATA_TOGGLE_ACTIVE = `.${CLASS_NAME_ACTIVE}[data-bs-toggle="tab"]
                 relatedTarget: relatedElem
             });
         };
-        this._queueCallback(complete, element, isAnimated);
+        this._queueCallback(complete, element, element.classList.contains(CLASS_NAME_FADE$1));
     }
     _keydown(event) {
         if (![
@@ -3860,7 +3898,7 @@ const SELECTOR_DATA_TOGGLE_ACTIVE = `.${CLASS_NAME_ACTIVE}[data-bs-toggle="tab"]
  */ defineJQueryPlugin(Tab);
 /**
  * --------------------------------------------------------------------------
- * Bootstrap (v5.2.0-beta1): toast.js
+ * Bootstrap (v5.2.0): toast.js
  * Licensed under MIT (https://github.com/twbs/bootstrap/blob/main/LICENSE)
  * --------------------------------------------------------------------------
  */ /**
@@ -6204,6 +6242,6 @@ var createPopper = /*#__PURE__*/ (0, _createPopperJs.popperGenerator)({
     defaultModifiers: defaultModifiers
 }); // eslint-disable-next-line import/no-unused-modules
 
-},{"./createPopper.js":"cHuNp","./modifiers/eventListeners.js":"hBKsL","./modifiers/popperOffsets.js":"6I679","./modifiers/computeStyles.js":"gDlm2","./modifiers/applyStyles.js":"4iMn4","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["aRq6p","ebWYT"], "ebWYT", "parcelRequire9d02")
+},{"./createPopper.js":"cHuNp","./modifiers/eventListeners.js":"hBKsL","./modifiers/popperOffsets.js":"6I679","./modifiers/computeStyles.js":"gDlm2","./modifiers/applyStyles.js":"4iMn4","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}]},["cVgJb","ebWYT"], "ebWYT", "parcelRequire9d02")
 
 //# sourceMappingURL=index.739bf03c.js.map
