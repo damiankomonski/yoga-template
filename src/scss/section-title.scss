@@ -1,6 +1,9 @@
 .section-title{
-    // margin-bottom: 70px;
     margin-bottom: 3rem;
+
+    @include media-breakpoint-up(lg){
+        margin-bottom: 4.375rem;
+    }
     
     h2{
         text-transform: uppercase;

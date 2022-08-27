@@ -78,7 +78,9 @@ $spacers: (
   84: $spacer * 5.25,
   20: $spacer * 1.25,
   64: $spacer * 4,
-  80: $spacer * 5
+  80: $spacer * 5,
+  146: $spacer * 9.125,
+  52: $spacer * 3.25
 );
 
 // Import Bootstrap 5
@@ -100,7 +102,7 @@ $theme-colors: map-merge($custom-theme-color, $theme-colors);
 
 // Utilities
 $utilities: map-merge(
-  $utilities,
+  $utilities, 
   (
     "width": (
       property: width,
@@ -120,7 +122,8 @@ $utilities: map-merge(
       class: flex-basis,
       responsive: true,
       values: (
-        50: 50%
+        50: 50%,
+        33: 33.33333%
       )
     )
   )
@@ -128,6 +131,9 @@ $utilities: map-merge(
 
 // Import Bootstrap 5
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+// Import AOS Plugin
+@import "../../node_modules/aos/dist/aos.css";
 
 // Theme styles
 @import "global";

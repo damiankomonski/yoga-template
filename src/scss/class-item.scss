@@ -6,6 +6,14 @@
         width: 312px;
     }
 
+    @include media-breakpoint-up(lg){
+        width: 426px;
+    }
+
+    @include media-breakpoint-up(xl){
+        width: 480px;
+    }
+
     a{
         text-decoration: none;
         transition: all 0.3s ease-in-out;

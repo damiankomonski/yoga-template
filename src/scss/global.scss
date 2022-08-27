@@ -85,6 +85,10 @@ header{
         width: 125px;
         height: 526px;
     }
+
+    @include media-breakpoint-up(lg){
+        top: 8.25rem;
+    }
 }
 
 .background-image-2{
