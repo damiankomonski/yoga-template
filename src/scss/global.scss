@@ -41,7 +41,9 @@ body{
 }
 
 main{
-    // margin-top: -146px;
+    @include media-breakpoint-up(xl){
+        margin-top: -170px;
+    }
 }
 
 header{
@@ -111,4 +113,15 @@ header{
         height: 675px;
         top: 1.5rem;
     }
+}
+
+
+// LazySizes Plugin
+.lazyload,
+.lazyloading {
+	opacity: 0;
+}
+.lazyloaded {
+	opacity: 1;
+	transition: opacity 300ms;
 }

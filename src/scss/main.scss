@@ -80,7 +80,9 @@ $spacers: (
   64: $spacer * 4,
   80: $spacer * 5,
   146: $spacer * 9.125,
-  52: $spacer * 3.25
+  52: $spacer * 3.25,
+  32: $spacer * 2,
+  156: $spacer * 9.75
 );
 
 // Import Bootstrap 5
@@ -123,7 +125,8 @@ $utilities: map-merge(
       responsive: true,
       values: (
         50: 50%,
-        33: 33.33333%
+        33: 33.33333%,
+        auto: auto
       )
     )
   )
