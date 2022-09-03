@@ -11,7 +11,11 @@
     }
 
     @include media-breakpoint-up(xl){
-        width: 480px;
+        width: 490px;
+    }
+
+    @include media-breakpoint-up(xxl){
+        width: auto;
     }
 
     a{

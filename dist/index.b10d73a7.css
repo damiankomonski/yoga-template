@@ -23154,7 +23154,7 @@ header {
 
 @media (min-width: 992px) {
   .background-image-1 {
-    top: 8.25rem;
+    top: .25rem;
   }
 }
 
@@ -23276,27 +23276,31 @@ header {
   font-style: italic;
 }
 
-@media (max-width: 1199.98px) {
+.navbar {
+  padding: 1.5rem 0;
+}
+
+@media (min-width: 992px) {
   .navbar {
-    padding: 2rem 0;
+    padding: 2.5rem 0;
   }
 }
 
-@media (max-width: 767.98px) {
+@media (min-width: 1200px) {
   .navbar {
-    padding: 1.5rem 0;
+    padding: 3.5rem 0;
   }
 }
 
 .navbar .navbar-brand {
-  margin-left: 1.875rem;
-  margin-right: 5.9375rem;
+  margin-left: 0;
+  margin-right: 0;
 }
 
-@media (max-width: 1199.98px) {
+@media (min-width: 992px) {
   .navbar .navbar-brand {
-    margin-left: 0;
-    margin-right: 0;
+    margin-left: 1.875rem;
+    margin-right: 5.9375rem;
   }
 }
 
@@ -23304,7 +23308,7 @@ header {
   font-family: Poppins, sans-serif;
 }
 
-@media (max-width: 1199.98px) {
+@media (min-width: 1200px) {
   .navbar .navbar-collapse .navbar-nav {
     margin-top: 1rem;
   }
@@ -23314,15 +23318,15 @@ header {
   text-transform: uppercase;
   color: #202020;
   letter-spacing: .1875rem;
-  margin: 0 2rem;
-  padding: 0;
+  margin: .25rem 0;
+  padding: .25rem 0;
   font-size: .875rem;
 }
 
-@media (max-width: 1199.98px) {
+@media (min-width: 992px) {
   .navbar .navbar-collapse .navbar-nav .nav-link {
-    margin: .25rem 0;
-    padding: .25rem 0;
+    margin: 0 2rem;
+    padding: 0;
   }
 }
 
@@ -23455,7 +23459,13 @@ header {
 
 @media (min-width: 1200px) {
   .class-item {
-    width: 480px;
+    width: 490px;
+  }
+}
+
+@media (min-width: 1400px) {
+  .class-item {
+    width: auto;
   }
 }
 

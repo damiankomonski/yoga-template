@@ -1,5 +1,5 @@
 import * as bootstrap from "bootstrap";
 import AOS from "aos";
-import "lazysizes";
+// import "lazysizes";
 
 AOS.init();
