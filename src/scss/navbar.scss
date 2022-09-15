@@ -14,17 +14,20 @@
         margin-right: 0;
 
         @include media-breakpoint-up(lg){
-            margin-right: 5.9375rem;
+            margin-right: 4rem;
             margin-left: 1.875rem;
         }
+
+        // margin-right: 5.9375rem;
     }
 
     .navbar-collapse{
         .navbar-nav{
             font-family: 'Poppins', sans-serif;
+            margin-top: 1rem;
 
-            @include media-breakpoint-up(xl){
-                margin-top: 1rem;
+            @include media-breakpoint-up(lg){
+                margin-top: .25rem;
             }
 
             .nav-link{
@@ -36,7 +39,7 @@
                 letter-spacing: 0.1875rem;
 
                 @include media-breakpoint-up(lg){
-                    margin: 0 2rem;
+                    margin: 0 1.5rem;
                     padding: 0;
                 }
             }

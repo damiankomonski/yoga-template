@@ -534,10 +534,9 @@ function hmrAcceptRun(bundle, id) {
 },{}],"ebWYT":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");
 var _bootstrap = require("bootstrap");
-var _aos = require("aos");
+var _aos = require("aos"); // import "lazysizes";
+ // AOS.init();
 var _aosDefault = parcelHelpers.interopDefault(_aos);
-// import "lazysizes";
-(0, _aosDefault.default).init();
 
 },{"bootstrap":"h36JB","aos":"eRzTM","@parcel/transformer-js/src/esmodule-helpers.js":"gkKU3"}],"h36JB":[function(require,module,exports) {
 var parcelHelpers = require("@parcel/transformer-js/src/esmodule-helpers.js");

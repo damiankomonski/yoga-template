@@ -42,7 +42,7 @@ body{
 
 main{
     @include media-breakpoint-up(xl){
-        margin-top: -170px;
+        margin-top: -146px;
     }
 }
 
@@ -89,7 +89,13 @@ header{
     }
 
     @include media-breakpoint-up(lg){
-        top: 0.25rem;
+        top: 1.5rem;
+    }
+
+    @include media-breakpoint-up(xl){
+        top: 10.75rem;
+        width: 334px;
+        height: 1411px;
     }
 }
 
@@ -112,6 +118,12 @@ header{
         width: 146px;
         height: 675px;
         top: 1.5rem;
+    }
+
+    @include media-breakpoint-up(xl){
+        width: 361px;
+        height: 1673px;
+        top: 0;
     }
 }
 
