@@ -17,8 +17,6 @@
             margin-right: 4rem;
             margin-left: 1.875rem;
         }
-
-        // margin-right: 5.9375rem;
     }
 
     .navbar-collapse{
@@ -41,6 +39,10 @@
                 @include media-breakpoint-up(lg){
                     margin: 0 1.5rem;
                     padding: 0;
+                }
+
+                @include media-breakpoint-up(xl){
+                    margin: 0 2rem;
                 }
             }
         }

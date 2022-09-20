@@ -94,7 +94,9 @@ $font-sizes: (
   4: $h4-font-size,
   5: $h5-font-size,
   6: $h6-font-size,
-  64: 4rem
+  64: 4rem,
+  48: 3rem,
+  60: 3.75rem
 );
 
 // Import Bootstrap 5
@@ -155,7 +157,7 @@ $utilities: map-merge(
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
 // Import AOS Plugin
-// @import "../../node_modules/aos/dist/aos.css";
+@import "../../node_modules/aos/dist/aos.css";
 
 // Theme styles
 @import "global";
@@ -168,3 +170,4 @@ $utilities: map-merge(
 @import "class-item";
 @import "big-quote";
 @import "gallery-item";
+@import "lazysizes";

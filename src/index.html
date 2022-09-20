@@ -4,7 +4,18 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Yoga template - Damian Komoński</title>
+    <meta name="description" content="Official YogaStudio website, the best place to practice yoga. Learn from the best teachers in the world.">
+    <meta name="robots" content="index, archive">
+    
+    <link rel="apple-touch-icon" sizes="180x180" href="./apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="./favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="./favicon-16x16.png">
+    <link rel="manifest" href="./site.webmanifest">
+    <link rel="mask-icon" href="./safari-pinned-tab.svg" color="#73a35a">
+    <meta name="msapplication-TileColor" content="#ffffff">
+    <meta name="theme-color" content="#ffffff">
+
+    <title>YogaStudio Website - Damian Komoński</title>
     <link rel="stylesheet" href="./scss/main.scss" />
 </head>
 <body>
@@ -12,7 +23,7 @@
       <nav class="navbar navbar-expand-lg">
           <div class="container-fluid">
             <a class="navbar-brand" href="#">
-              <img src="./img/logo.svg" alt="YogaStudio Logo">
+              <img class="lazyload" data-src="./img/logo.svg" alt="YogaStudio Logo" width="152" height="33">
             </a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
               <span class="navbar-toggler-icon"></span>
@@ -41,22 +52,22 @@
     </header>
     <main>
       <section class="mt-4 mt-lg-0 mb-64 position-relative">
-        <div class="background-image-1 position-absolute"></div>
+        <div class="background-image-1 position-absolute lazyload" data-bg="./img/background-1.png"></div>
         <div class="container">
           <div class="row">
             <div class="col-xxl-5 col-xl-5 col-lg-6 mb-5 col-12">
-              <h1 class="text-greydark mt-lg-3 mt-xl-156 fs-lg-64">Live Healthy, Happy and <span class="text-primary fw-bold">joyful life</span></h1>
+              <h1 class="text-greydark mt-lg-3 mt-xl-216 fs-lg-64 fs-xxl-1">Live Healthy, Happy and <span class="text-primary fw-bold">joyful life</span></h1>
               <p class="mb-4">Ac ultrices facilisis suspendisse nec sagittis, mauris quisque pellentesque tincidunt. Semper habitasse id tincidunt et rhoncus placerat fusce. Feugiat tellus metus lacus vulputate sed nec, feugiat at.</p>
               <a href="#" class="btn btn-primary">Join us</a>
             </div>
-            <div class="col-xxl-7 col-xl-7 col-lg-6 col-12 d-md-flex d-lg-block justify-content-md-center" data-aos="">
-              <img class="w-100 w-md-80 w-lg-100 w-xxl-auto float-end " src="./img/slider-img.png" alt="Slider image">
+            <div class="col-xxl-7 col-xl-7 col-lg-6 col-12 d-md-flex d-lg-block justify-content-md-center" data-aos="fade-left">
+              <img class="w-100 h-auto w-md-80 w-lg-100 w-xxl-auto float-end lazyload" data-src="./img/slider-img.png" alt="Yoga slider image" width="730" height="893">
             </div>
           </div>
         </div>
       </section>
       <section class="position-relative mb-48">
-        <div class="background-image-2 position-absolute"></div>
+        <div class="background-image-2 position-absolute lazyload" data-bg="./img/background-2.png"></div>
         <div class="container">
           <div class="row">
             <div class="col-xxl-4 col-lg-4 col-12 mb-4" data-aos="fade-up">
@@ -80,13 +91,13 @@
             <div class="col-xxl-12 col-12 d-md-flex justify-content-md-between">
               <div class="class-item mb-4" data-aos="fade-right">
                 <a href="#">
-                  <img class="" src="img/outdoor-sessions.png" alt="">
+                  <img class="lazyload" data-src="img/outdoor-sessions.png" alt="Outdoor Sessions" width="591" height="501">
                   <p>Outdoor sessions</p>
                 </a>
               </div>
               <div class="class-item mb-4" data-aos="fade-left">
                 <a href="#">
-                  <img class="" src="img/training.png" alt="">
+                  <img class="lazyload" data-src="img/training.png" alt="Training" width="591" height="501">
                   <p>Training</p>
                 </a>
               </div>
@@ -114,13 +125,13 @@
             <div class="col-xxl-12 col-12 d-lg-flex">
                 <div class="gallery-item me-lg-32" data-aos="fade-right">
                   <a href="#">
-                    <img class="" src="img/offer-1.png" alt="Outdoor Sessions">
+                    <img class="lazyload" data-src="img/offer-1.png" alt="Outdoor Sessions" width="641" height="434">
                     <p>Outdoor Sessions</p>
                   </a>
                 </div>
                 <div class="gallery-item" data-aos="fade-left">
                   <a href="#">
-                    <img class="" src="img/offer-2.png" alt="Healing Sessions">
+                    <img class="lazyload" data-src="img/offer-2.png" alt="Healing Sessions" width="653" height="434">
                     <p>Healing Sessions</p>
                   </a>
                 </div>
@@ -130,13 +141,13 @@
             <div class="col-xxl-12 col-12 d-lg-flex">
               <div class="gallery-item me-lg-32" data-aos="fade-right">
                 <a href="#">
-                  <img class="" src="img/offer-3.png" alt="Yoga">
+                  <img class="lazyload" data-src="img/offer-3.png" alt="Yoga" width="893" height="596">
                   <p>Yoga</p>
                 </a>
               </div>
               <div class="gallery-item" data-aos="fade-left">
                 <a href="#">
-                  <img class="" src="img/offer-4.png" alt="Training">
+                  <img class="lazyload" data-src="img/offer-4.png" alt="Training" width="398" height="596">
                   <p>Training</p>
                 </a>
               </div>
@@ -147,8 +158,8 @@
       <section class="mb-80">
         <div class="container">
           <div class="row align-items-center">
-            <div class="col-xl-5 offset-xl-1 col-lg-6 col-12 mb-3">
-              <h2 class="text-uppercase text-grey-2 fs-lg-3 fs-xl-2">Join our free email newsletter</h2>
+            <div class="col-xl-5 offset-xl-1 col-lg-6 col-12 mb-3 mb-lg-0">
+              <h2 class="text-uppercase text-grey-2 fs-lg-3 fs-xxl-60 ">Join our free email newsletter</h2>
               <p class="font-size-big mb-lg-0">Sign Up for our newsletter and never miss any offers</p>
             </div>
             <div class="col-xl-5 col-lg-6 col-12">
@@ -233,24 +244,24 @@
             <div class="section-title col-12">
               <h2 class="h3">Yoga news</h2>
             </div>
-            <div class="blog__news col-xxl-4 col-12 col-md-6 col-lg-4" data-aos="fade-up">
+            <article class="blog__news col-xxl-4 col-12 col-md-6 col-lg-4" data-aos="fade-up">
               <a href="#">
-                <img class="" src="img/blog-1.png" alt="">
+                <img class="lazyload" data-src="img/blog-1.png" alt="101 Yoga Poses for healthy Life" width="412" height="294">
                 <h3 class="h5">101 Yoga Poses for healthy Life</h3>
               </a>
-            </div>
-            <div class="blog__news col-xxl-4 col-12 col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
+            </article>
+            <article class="blog__news col-xxl-4 col-12 col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="100">
               <a href="#">
-                <img class="" src="img/blog-2.png" alt="">
+                <img class="lazyload" data-src="img/blog-2.png" alt="Giftable Plants which warms the heart" width="413" height="294">
                 <h3 class="h5">Giftable Plants which warms the heart</h3>
               </a>
-            </div>
-            <div class="blog__news col-xxl-4 col-12 col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
+            </article>
+            <article class="blog__news col-xxl-4 col-12 col-md-6 col-lg-4" data-aos="fade-up" data-aos-delay="200">
               <a href="#">
-                <img class="" src="img/blog-3.png" alt="">
+                <img class="lazyload" data-src="img/blog-3.png" alt="Creative ideas to make this holiday special" width="412" height="294">
                 <h3 class="h5">Creative ideas to make this holiday special</h3>
               </a>
-            </div>
+            </article>
             <div class="col-12 text-center" data-aos="fade-up">
               <a href="#" class="btn btn-primary">Go to blog</a>
             </div>
@@ -265,19 +276,19 @@
             </div>
             <div class="follow-instagram__posts flex-column flex-md-row flex-md-wrap flex-lg-nowrap col-xxl-12 col-12">
               <a href="#" class="flex-basis-md-50 flex-basis-lg-auto">
-                <img class="" src="img/instagram-1.png" alt="Instagram post">
+                <img class="lazyload" data-src="img/instagram-1.png" alt="Instagram post title" width="384" height="384">
               </a>
               <a href="#" class="flex-basis-md-50 flex-basis-lg-auto">
-                <img class="" src="img/instagram-2.png" alt="Instagram post">
+                <img class="lazyload" data-src="img/instagram-2.png" alt="Instagram post title" width="384" height="384">
               </a>
               <a href="#" class="flex-basis-md-50 flex-basis-lg-auto">
-                <img class="" src="img/instagram-3.png" alt="Instagram post">
+                <img class="lazyload" data-src="img/instagram-3.png" alt="Instagram post title" width="384" height="384">
               </a>
               <a href="#" class="flex-basis-md-50 flex-basis-lg-auto">
-                <img class="" src="img/instagram-4.png" alt="Instagram post">
+                <img class="lazyload" data-src="img/instagram-4.png" alt="Instagram post title" width="384" height="384">
               </a>
               <a href="#" class="flex-basis-md-50 flex-basis-lg-auto">
-                <img class="" src="img/instagram-5.png" alt="Instagram post">
+                <img class="lazyload" data-src="img/instagram-5.png" alt="Instagram post title" width="384" height="384">
               </a>
             </div>
           </div>
@@ -290,7 +301,7 @@
               <div class="col-xl-5 col-12 mb-4">
                 <div class="mb-22">
                   <a href="#">
-                    <img src="img/logo-2.svg" alt="YogaStudio Logo">
+                    <img class="lazyload" src="img/logo-2.svg" alt="YogaStudio Logo" width="220" height="48">
                   </a>
                 </div>
 
@@ -303,22 +314,22 @@
                 <ul class="d-flex list-unstyled">
                   <li class="me-20">
                     <a href="#">
-                      <img src="img/icon-facebook.svg" alt="Facebook Link">
+                      <img class="lazyload" data-src="img/icon-facebook.svg" alt="YogaStudio Facebook" width="26" height="26">
                     </a>
                   </li>
                   <li class="me-20">
                     <a href="#">
-                      <img src="img/icon-instagram.svg" alt="Instagram Link">
+                      <img class="lazyload" data-src="img/icon-instagram.svg" alt="YogaStudio Instagram" width="26" height="26">
                     </a>
                   </li>
                   <li class="me-20">
                     <a href="#">
-                      <img src="img/icon-twitter.svg" alt="Twitter Link">
+                      <img class="lazyload" data-src="img/icon-twitter.svg" alt="YogaStudio Twitter" width="26" height="26">
                     </a>
                   </li>
                   <li class="me-20">
                     <a href="#">
-                      <img src="img/icon-skype.svg" alt="Skype Link">
+                      <img class="lazyload" data-src="img/icon-skype.svg" alt="YogaStudio Skype" width="27" height="">
                     </a>
                   </li>
                 </ul>

@@ -70,7 +70,7 @@ header{
 
 // Backgrounds
 .background-image-1{
-    background: url('../img/background-1.png') no-repeat;
+    background-repeat: no-repeat;
     background-size: 100% auto;
     width: 76px;
     height: 320px;
@@ -94,13 +94,18 @@ header{
 
     @include media-breakpoint-up(xl){
         top: 10.75rem;
+        width: 264px;
+        height: 1115px;
+    }
+
+    @include media-breakpoint-up(xxl){
         width: 334px;
         height: 1411px;
     }
 }
 
 .background-image-2{
-    background: url('../img/background-2.png') no-repeat;
+    background-repeat: no-repeat;
     background-size: 100% auto;
     width: 90px;
     height: 416px;
@@ -121,19 +126,13 @@ header{
     }
 
     @include media-breakpoint-up(xl){
-        width: 361px;
-        height: 1673px;
+        width: 288px;
+        height: 1333px;
         top: 0;
     }
-}
 
-
-// LazySizes Plugin
-.lazyload,
-.lazyloading {
-	opacity: 0;
-}
-.lazyloaded {
-	opacity: 1;
-	transition: opacity 300ms;
+    @include media-breakpoint-up(xxl){
+        width: 361px;
+        height: 1673px;
+    }
 }
