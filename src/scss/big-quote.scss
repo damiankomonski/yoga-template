@@ -1,7 +1,12 @@
 .big-quote{
-    // padding-left: 146px;
     position: relative;
     margin-top: 5rem;
+
+    @include media-breakpoint-up(xl){
+        margin-top: 0;
+        padding-left: 146px;
+        margin-bottom: 0;
+    }
 
     &:before{
         content: '';
@@ -13,6 +18,12 @@
         position: absolute;
         left: 0;
         top: -5rem;
+
+        @include media-breakpoint-up(xl){
+            top: 0;
+            width: 94px;
+            height: 94px;
+        }
     }
 
     blockquote, figcaption{
@@ -26,6 +37,11 @@
         @include media-breakpoint-up(md){
             font-size: 1.75rem;
             line-height: 3rem;
+        }
+
+        @include media-breakpoint-up(xl){
+            font-size: 2rem;
+            line-height: 3.8125rem;
         }
     }
 }

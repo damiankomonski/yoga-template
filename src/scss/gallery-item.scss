@@ -5,11 +5,7 @@
     transition: opacity 0.3s ease-in-out;
 
     &:hover{
-        opacity: 0.7;
-    }
-
-    &:first-child{
-        // margin-right: 48px;
+        opacity: 0.7 !important;
     }
 
     img{
