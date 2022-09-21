@@ -20,5 +20,5 @@ It is modern coding version of this website template:
 - Lazyload on all images
 - Animations
 - SEO optimized
-- Utility-first approach
+- **Utility-first approach**
 - Minified and compressed files
