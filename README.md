@@ -21,4 +21,3 @@ It is modern coding version of this website template:
 - Animations
 - SEO optimized
 - **Utility-first approach**
-- Minified and compressed files
