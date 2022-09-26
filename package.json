@@ -5,7 +5,7 @@
   "source": "src/index.html",
   "scripts": {
     "start": "parcel",
-    "build": "parcel build --public-url ./"
+    "build": "rm -rf ./dist/* && parcel build --public-url ./"
   },
   "author": "Damian Komoński",
   "license": "ISC",
