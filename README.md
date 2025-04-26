@@ -6,7 +6,7 @@ It is modern coding version of this website template:
 [Click here](https://templatesjungle.com/downloads/divineyoga-free-yoga-teacher-studio-figma-template/)
 
 ### Live version
-[Watch live version](https://projects.koski.studio/template-yoga/)
+[Watch live version](https://koskistudio.pl/projects/template-yoga/)
 
 ## Used technologies
 - HTML
